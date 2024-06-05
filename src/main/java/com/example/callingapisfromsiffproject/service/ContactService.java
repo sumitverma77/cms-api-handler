@@ -2,6 +2,7 @@ package com.example.callingapisfromsiffproject.service;
 
 import com.example.callingapisfromsiffproject.configuration.RestTemplateConfig;
 import com.example.callingapisfromsiffproject.request.AddRequest;
+import com.example.callingapisfromsiffproject.response.AddResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,10 +22,7 @@ public class ContactService {
     @Autowired
     private RestTemplate restTemplate;
 
-   public ResponseEntity<JsonNode> addService(AddRequest addRequest)  {
-
-       //------------------------------------------------------------------------------------------------------------
-
+   public AddResponse addService(AddRequest addRequest)  {
        HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -32,28 +30,48 @@ public class ContactService {
 
        String url = "http://localhost:8080/contact/add";
 
-       ResponseEntity<String> response = restTemplate.exchange(
+       ResponseEntity<AddResponse> response = restTemplate.exchange(
                url,
                HttpMethod.POST,
                requestEntity,
-               String.class
+               AddResponse.class
        );
-       String  responseBody = response.getBody();
+       AddResponse addResponse = response.getBody();
+       addResponse.setMsg(addResponse.getMsg().toUpperCase());
+       return addResponse ;
 
-       try {
-           ObjectMapper objectMapper = new ObjectMapper();
-           JsonNode jsonResponse = objectMapper.readTree(responseBody);
-           String msg = jsonResponse.get("msg").asText();
-           if (msg != null) {
-               msg = msg.toUpperCase();
-               ((ObjectNode) jsonResponse).put("msg", msg);
-           }
 
-           return ResponseEntity.status(response.getStatusCode()).body(jsonResponse);
-       } catch (JsonProcessingException e) {
-           e.printStackTrace();
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-       }
+       //------------------------------------------------------------------------------------------------------------
+
+//       HttpHeaders headers = new HttpHeaders();
+//       headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//       HttpEntity<AddRequest> requestEntity = new HttpEntity<>(addRequest, headers);
+//
+//       String url = "http://localhost:8080/contact/add";
+//
+//       ResponseEntity<String> response = restTemplate.exchange(
+//               url,
+//               HttpMethod.POST,
+//               requestEntity,
+//               String.class
+//       );
+//       String  responseBody = response.getBody();
+//
+//       try {
+//           ObjectMapper objectMapper = new ObjectMapper();
+//           JsonNode jsonResponse = objectMapper.readTree(responseBody);
+//           String msg = jsonResponse.get("msg").asText();
+//           if (msg != null) {
+//               msg = msg.toUpperCase();
+//               ((ObjectNode) jsonResponse).put("msg", msg);
+//           }
+//
+//           return ResponseEntity.status(response.getStatusCode()).body(jsonResponse);
+//       } catch (JsonProcessingException e) {
+//           e.printStackTrace();
+//           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//       }
 
 
        //---------------------------------------------------------------------------------------------------------

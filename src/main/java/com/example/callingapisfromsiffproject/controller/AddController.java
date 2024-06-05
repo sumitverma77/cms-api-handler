@@ -1,6 +1,7 @@
 package com.example.callingapisfromsiffproject.controller;
 
 import com.example.callingapisfromsiffproject.request.AddRequest;
+import com.example.callingapisfromsiffproject.response.AddResponse;
 import com.example.callingapisfromsiffproject.service.ContactService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AddController {
     @Autowired
    private ContactService contactService;
     @PostMapping("add/api")
-    public ResponseEntity<JsonNode> add(@RequestBody AddRequest addRequest) {
+    public AddResponse add(@RequestBody AddRequest addRequest) {
         return contactService.addService(addRequest);
     }
 }
