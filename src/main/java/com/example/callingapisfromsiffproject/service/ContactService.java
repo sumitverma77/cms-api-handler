@@ -1,32 +1,49 @@
 package com.example.callingapisfromsiffproject.service;
 
-import com.example.callingapisfromsiffproject.configuration.RestTemplateConfig;
 import com.example.callingapisfromsiffproject.request.AddRequest;
+import com.example.callingapisfromsiffproject.request.SearchByBothRequest;
 import com.example.callingapisfromsiffproject.response.AddResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.catalina.User;
+import com.example.callingapisfromsiffproject.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.List;
 
 
-    @Service
+@Service
 public class ContactService {
     @Autowired
     private RestTemplate restTemplate;
+public List<SearchResponse> searchByBoth(SearchByBothRequest searchByBothRequest)
+{
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
 
-   public AddResponse addService(AddRequest addRequest)  {
+    HttpEntity<SearchByBothRequest> requestEntity = new HttpEntity<>(searchByBothRequest, headers);
+
+    String url = "http://localhost:8080/contact/search/both";
+
+    ResponseEntity<List> response = restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            //Rest Template does't support Get HttpMethod
+            requestEntity,
+            List.class
+            //new ParameterizedTypeReference<List<SearchResponse>>() {}
+    );
+
+    return response.getBody();
+}
+
+public AddResponse addService(AddRequest addRequest)  {
        HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.APPLICATION_JSON);
 
        HttpEntity<AddRequest> requestEntity = new HttpEntity<>(addRequest, headers);
+       //with header add request is also needed
 
        String url = "http://localhost:8080/contact/add";
 
@@ -37,9 +54,9 @@ public class ContactService {
                AddResponse.class
        );
        AddResponse addResponse = response.getBody();
+
        addResponse.setMsg(addResponse.getMsg().toUpperCase());
        return addResponse ;
-
 
        //------------------------------------------------------------------------------------------------------------
 
@@ -104,5 +121,5 @@ public class ContactService {
 //           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 //       }
    }
-   }
+    }
 
