@@ -29,7 +29,7 @@ public List<SearchResponse> searchByBoth(SearchByBothRequest searchByBothRequest
     ResponseEntity<List> response = restTemplate.exchange(
             url,
             HttpMethod.POST,
-            //Rest Template does't support Post HttpMethod
+            //Rest Template does't support Get HttpMethod
             requestEntity,
             List.class
             //new ParameterizedTypeReference<List<SearchResponse>>() {}
