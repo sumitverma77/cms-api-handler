@@ -1,14 +1,18 @@
 package com.example.callingapisfromsiffproject.service;
 
 import com.example.callingapisfromsiffproject.request.AddRequest;
+import com.example.callingapisfromsiffproject.request.DeleteRequest;
 import com.example.callingapisfromsiffproject.request.SearchByBothRequest;
 import com.example.callingapisfromsiffproject.response.AddResponse;
+import com.example.callingapisfromsiffproject.response.DeleteResponse;
 import com.example.callingapisfromsiffproject.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -17,6 +21,25 @@ import java.util.List;
 public class ContactService {
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+  private WebClient webClient;
+    //Creating the webClient Instance
+ //   WebClient webClient = WebClient.create();
+    public DeleteResponse deleteContact(DeleteRequest deleteRequest)
+    {
+
+        DeleteResponse deleteResponse= webClient.method(HttpMethod.DELETE)
+                .uri("http://localhost:8080/contact/delete")
+                .body(BodyInserters.fromValue(deleteRequest))
+                .retrieve()
+                .bodyToMono(DeleteResponse.class)
+                .block();
+         String response=deleteResponse.getMsg();
+         deleteResponse.setMsg(response.toUpperCase());
+        return deleteResponse;
+    }
+
+
 public List<SearchResponse> searchByBoth(SearchByBothRequest searchByBothRequest)
 {
     HttpHeaders headers = new HttpHeaders();
@@ -25,7 +48,6 @@ public List<SearchResponse> searchByBoth(SearchByBothRequest searchByBothRequest
     HttpEntity<SearchByBothRequest> requestEntity = new HttpEntity<>(searchByBothRequest, headers);
 
     String url = "http://localhost:8080/contact/search/both";
-
     ResponseEntity<List> response = restTemplate.exchange(
             url,
             HttpMethod.POST,
@@ -34,9 +56,9 @@ public List<SearchResponse> searchByBoth(SearchByBothRequest searchByBothRequest
             List.class
             //new ParameterizedTypeReference<List<SearchResponse>>() {}
     );
-
     return response.getBody();
 }
+
 
 public AddResponse addService(AddRequest addRequest)  {
        HttpHeaders headers = new HttpHeaders();

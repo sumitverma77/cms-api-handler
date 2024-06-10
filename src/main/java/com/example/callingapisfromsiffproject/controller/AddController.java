@@ -1,8 +1,10 @@
 package com.example.callingapisfromsiffproject.controller;
 
 import com.example.callingapisfromsiffproject.request.AddRequest;
+import com.example.callingapisfromsiffproject.request.DeleteRequest;
 import com.example.callingapisfromsiffproject.request.SearchByBothRequest;
 import com.example.callingapisfromsiffproject.response.AddResponse;
+import com.example.callingapisfromsiffproject.response.DeleteResponse;
 import com.example.callingapisfromsiffproject.response.SearchResponse;
 import com.example.callingapisfromsiffproject.service.ContactService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,5 +32,15 @@ public class AddController {
     public List<SearchResponse> search(@RequestBody SearchByBothRequest searchByBothRequest)
     {
         return contactService.searchByBoth(searchByBothRequest);
+    }
+    @GetMapping("search/phone")
+    public List<SearchResponse> searchbyphone(@RequestBody SearchByBothRequest searchByBothRequest)
+    {
+        return contactService.searchByPhone(searchByBothRequest);
+    }
+    @GetMapping("delete")
+    public DeleteResponse delete(@RequestBody DeleteRequest deleteRequest)
+    {
+      return  contactService.deleteContact(deleteRequest);
     }
 }
