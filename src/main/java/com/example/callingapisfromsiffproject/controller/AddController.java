@@ -7,14 +7,8 @@ import com.example.callingapisfromsiffproject.response.AddResponse;
 import com.example.callingapisfromsiffproject.response.DeleteResponse;
 import com.example.callingapisfromsiffproject.response.SearchResponse;
 import com.example.callingapisfromsiffproject.service.ContactService;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -32,11 +26,6 @@ public class AddController {
     public List<SearchResponse> search(@RequestBody SearchByBothRequest searchByBothRequest)
     {
         return contactService.searchByBoth(searchByBothRequest);
-    }
-    @GetMapping("search/phone")
-    public List<SearchResponse> searchbyphone(@RequestBody SearchByBothRequest searchByBothRequest)
-    {
-        return contactService.searchByPhone(searchByBothRequest);
     }
     @GetMapping("delete")
     public DeleteResponse delete(@RequestBody DeleteRequest deleteRequest)
