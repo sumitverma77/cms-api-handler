@@ -1,16 +1,16 @@
 package com.example.callingapisfromsiffproject.facades;
 
-import com.example.callingapisfromsiffproject.request.AddRequest;
-import com.example.callingapisfromsiffproject.request.DeleteRequest;
-import com.example.callingapisfromsiffproject.request.SearchByBothRequest;
-import com.example.callingapisfromsiffproject.response.AddResponse;
-import com.example.callingapisfromsiffproject.response.DeleteResponse;
-import com.example.callingapisfromsiffproject.response.SearchResponse;
+import com.example.callingapisfromsiffproject.dto.request.AddRequest;
+import com.example.callingapisfromsiffproject.dto.request.DeleteRequest;
+import com.example.callingapisfromsiffproject.dto.request.SearchByBothRequest;
+import com.example.callingapisfromsiffproject.dto.response.AddResponse;
+import com.example.callingapisfromsiffproject.dto.response.DeleteResponse;
+import com.example.callingapisfromsiffproject.dto.response.SearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +23,8 @@ public class ContactManagement {
     RestTemplate restTemplate;
     @Autowired
     WebClient webClient;
-
+     @Autowired
+     private RedisTemplate redisTemplate;
     public static final String ADD_SERVICE = "add";
     public static final String DELETE_SERVICE = "delete";
     public static final String SEARCH_BY_BOTH_SERVICE = "search/both";

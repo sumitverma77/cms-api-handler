@@ -1,4 +1,4 @@
-package com.example.callingapisfromsiffproject.response;
+package com.example.callingapisfromsiffproject.dto.response;
 
 import lombok.Data;
 
