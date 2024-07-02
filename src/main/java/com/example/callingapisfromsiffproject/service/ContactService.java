@@ -34,7 +34,7 @@ public class ContactService {
     }
 
     /**
-     * cehcks in cache if phone number is present then it is returning for there only
+     * checks in cache if phone number is present then it is returning for there only
      * else  calling for the external service to addContact
      *
      * @param addRequest - name and phone of user

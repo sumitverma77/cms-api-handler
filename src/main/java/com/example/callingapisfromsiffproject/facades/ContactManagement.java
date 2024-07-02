@@ -50,7 +50,6 @@ public class ContactManagement {
     }
     public DeleteResponse deleteContact(DeleteRequest deleteRequest)
     {
-
         DeleteResponse deleteResponse= webClient.method(HttpMethod.DELETE)
                 .uri(baseUrl+DELETE_SERVICE)
                 .body(BodyInserters.fromValue(deleteRequest))
@@ -70,7 +69,7 @@ public class ContactManagement {
         ResponseEntity<List> response = restTemplate.exchange(
                 url,
                 HttpMethod.POST,
-                //Rest Template does't support Post HttpMethod
+                //Rest Template does't support body in  Get HttpMethod
                 requestEntity,
                 List.class
                 //new ParameterizedTypeReference<List<SearchResponse>>() {}
