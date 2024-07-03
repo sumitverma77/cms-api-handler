@@ -8,6 +8,8 @@ import com.example.callingapisfromsiffproject.dto.request.SearchByBothRequest;
 import com.example.callingapisfromsiffproject.dto.response.AddResponse;
 import com.example.callingapisfromsiffproject.dto.response.DeleteResponse;
 import com.example.callingapisfromsiffproject.dto.response.SearchResponse;
+import com.example.callingapisfromsiffproject.kafka.KafkaConsumer;
+import com.example.callingapisfromsiffproject.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ContactService {
     private ContactManagement contactManagement;
     @Autowired
     private RedisTemplate<String , Object> redisTemplate;
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
 
     public DeleteResponse deleteContact(DeleteRequest deleteRequest) {
         DeleteResponse deleteResponse = contactManagement.deleteContact(deleteRequest);
@@ -45,6 +50,9 @@ public class ContactService {
         Object cachedValue = redisTemplate.opsForValue().get(addRequest.getPhone());
 
         if (cachedValue != null) {
+            kafkaProducer.sendMessage("topic1" , "returned from cache");
+            System.out.println("returning from cache");
+            System.out.println("calling from cache");
             Long cachedId = Long.parseLong(cachedValue.toString());
             addResponse.setId(cachedId);
             addResponse.setMsg(MessageConstant.alreadyPresent);
@@ -58,5 +66,6 @@ public class ContactService {
 
         return addResponseFromApi;
     }
+
 }
 
