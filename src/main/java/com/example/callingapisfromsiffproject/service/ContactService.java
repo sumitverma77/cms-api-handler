@@ -8,6 +8,7 @@ import com.example.callingapisfromsiffproject.dto.request.SearchByBothRequest;
 import com.example.callingapisfromsiffproject.dto.response.AddResponse;
 import com.example.callingapisfromsiffproject.dto.response.DeleteResponse;
 import com.example.callingapisfromsiffproject.dto.response.SearchResponse;
+import com.example.callingapisfromsiffproject.kafka.KafkaConsumer;
 import com.example.callingapisfromsiffproject.kafka.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +26,7 @@ public class ContactService {
     private RedisTemplate<String , Object> redisTemplate;
     @Autowired
     private KafkaProducer kafkaProducer;
+
 
     public DeleteResponse deleteContact(DeleteRequest deleteRequest) {
         DeleteResponse deleteResponse = contactManagement.deleteContact(deleteRequest);
